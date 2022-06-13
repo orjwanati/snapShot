@@ -59,7 +59,7 @@ class StoreObject {
     }
 
     /**
-     * This function resets the whole object to initial state when the it was created.
+     * This function resets the snapshot list.
      * @loaded is set to false, @objects is set to empty array, and @history is cleared.
      */
     reset() {
@@ -269,7 +269,7 @@ class StoreObject {
     }
 
     /**
-    * This function resets the whole object to initial state when the it was created.
+    * This function resets the snapshot object.
     * @loaded is set to false, @object is set to null, and @history is cleared.
      */
     reset() {
