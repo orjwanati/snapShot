@@ -1,29 +1,39 @@
-/**
- *  This File conatins a simple implementation the Memento design pattern which is behavioral pattern and one of 
+/*!
+ * snapshot <>
+*  This File conatins a simple implementation the Memento design pattern which is behavioral pattern and one of 
  *  23 design patterns discussed by Gang of Four. Memento pattern is used to restore state of an object 
  *  to a previous state. It is also known as snapshot pattern.
+ * Copyright (c) 2022, Orjuwan Al-Wadeai.
+ * Released under the MIT License.
  */
+
 
 /**
  * A class that represents a default object that is used for SnapshotArray and SnapshotObject
  */
 class StoreObject {
+    
+    /**
+     * data to store in the object
+     * data
+     * @type {Any}
+     */
     data = null;
+
     /**
      * Constructor
-     * @param {*} data 
      */
     constructor(data) {
         this.data = data;
     }
 
     /**
-     * a class method to create an instance of the class
-     * @param {*} item 
-     * @returns 
+     * initiate an instance of the class
+     * @param {*} data: Object that holds required data 
+     * @returns {StoreObject} - the object created
      */
-    static Create(item) {
-        return new StoreObject(item);
+    static Create(data) {
+        return new StoreObject(data);
     }
 }
 
@@ -59,8 +69,8 @@ class StoreObject {
       }
 
       /**
-       * 
-       * @param {*} items 
+       * Creates a snapshot list from a list of items 
+       * @param {*} items list of objects
        */
     create(items) {
         this.objects = []
@@ -72,7 +82,7 @@ class StoreObject {
     }
 
     /**
-     * 
+     * Stores current state in history
      */
     onChange() {
         if(this.history === null) {
@@ -82,7 +92,7 @@ class StoreObject {
 
 
       /**
-       * 
+       * Undo any changes since the last save
        */
     undo() {
         if(this.history !== null) {
@@ -92,16 +102,16 @@ class StoreObject {
     }
 
     /**
-     * 
+     * Commits changes and Clears History
      */
     save() {
         this.history = null;
     }
 
     /**
-     * 
-     * @param {*} item 
-     * @returns 
+     * Create a new item, doesnot add it to snapshot list
+     * @param {*} item object to create a new entry from 
+     * @returns the created new object
      */
     createItem(item) {
          this.newObject = this.createMethod(item);
@@ -109,7 +119,7 @@ class StoreObject {
     }
 
     /**
-     * 
+     * Adds the last created object using {createItem} to snapshot list
      */
     saveAdd() {
         if(this.newObject) {
@@ -119,16 +129,17 @@ class StoreObject {
     }
 
     /**
-     * 
+     * Undo action performed by {createItem, esaveAdd}
      */
     undoAdd() {
         this.newObject = null;
     }
 
     /**
-     * 
-     * @param {*} item 
-     * @returns 
+     * Create a new object and adds it to the start of the snapshot list
+     * needs to call {save} to commit the delete
+     * @param {*} item data of the new item
+     * @returns the new object created and added
      */
     add(item) {
         this.onChange();
@@ -138,9 +149,10 @@ class StoreObject {
     }
 
     /**
-     * 
-     * @param {*} item 
-     * @returns 
+     * Create a new object and adds it to the end of the snapshot list
+     * needs to call {save} to commit the delete
+     * @param {*} item data of the new item
+     * @returns the new object created and added
      */
     push(item) {
         this.onChange();
@@ -150,9 +162,10 @@ class StoreObject {
     }
 
     /**
-     * 
-     * @param {*} key 
-     * @param {*} value 
+     * delete an object in the snapshot list that has the paramater 'key' with 'value'
+     * needs to call {save} to commit the delete
+     * @param {*} key name of a paramater 
+     * @param {*} value value of the parameter
      */
     delete(key, value) {
         this.onChange();
@@ -203,40 +216,38 @@ class StoreObject {
     }
 
     /**
-     * 
-     * @param {*} findFunction 
-     * @returns 
+     * Returns the value of the first element in the array where predicate is true, and undefined otherwise.
+     * @param {*} findFunction the filter function that is applied to each element in the list until one matches the condition
      */
     findObject(findFunction) {
         return this.objects.find(findFunction);
     }
 
     /**
-     * 
-     * @param {*} findFunction 
-     * @returns 
+     * Returns the elements of snapshot list that meet the condition specified in {filterFunction}.
+     * @param {*} filterFunction the filter function that is applied to each element in the list 
      */
-    filterObjects(findFunction) {
-        return this.objects.filter(findFunction);
+    filterObjects(filterFunction) {
+        return this.objects.filter(filterFunction);
     }
 
     /**
-     * 
-     * @param {*} sortFunction 
+     * Sorts an array in place. 
+     * @param {*} sortFunction Function used to determine the order of the elements. It is expected to return a negative value if the first argument is less than the second argument, zero if they're equal, and a positive value otherwise. If omitted, the elements are sorted in ascending, ASCII character order.
      */
     sortObjects(sortFunction) {
         this.objects = this.objects.slice().sort(sortFunction)
     }
 
     /**
-     * 
+     * Reverses the elements in an array in place. 
      */
     reverseObjects() {
         this.objects = this.objects.slice().reverse();
     }
 
     /**
-     * 
+     * returns snapshot list 
      */
     get all() {
         return this.sortMethod(this.objects);
@@ -250,15 +261,16 @@ class StoreObject {
     createMethod = (tmp) => (tmp);
 
     /**
-     * 
-     * @param {*} createMethod 
+     * Constructor
+     * @param {*} createMethod: a function that is used to create a snapshot Object
      */
     constructor(createMethod= (tmp) => (tmp)) {
         this.createMethod = createMethod
     }
 
     /**
-     * 
+    * This function resets the whole object to initial state when the it was created.
+    * @loaded is set to false, @object is set to null, and @history is cleared.
      */
     reset() {
         this.loaded = false;
@@ -267,8 +279,8 @@ class StoreObject {
       }
 
      /**
-      * 
-      * @param {*} val 
+       * Creates a snapshot object from an item 
+       * @param {*} val the value of the object
       */ 
     create(val) {
         this.object = this.createMethod(val);
@@ -276,8 +288,9 @@ class StoreObject {
     }
 
     /**
-     * 
-     * @param {*} val 
+     * Changes the value of the snapshot object.
+     * needs to call {save} to commit the delete
+     * @param {*} val the new value
      */
     change(val) {
         this.onChange();
@@ -285,7 +298,7 @@ class StoreObject {
     }
 
     /**
-     * 
+     * Stores current state in history
      */
     onChange() {
         if(this.history === null) {
@@ -293,9 +306,9 @@ class StoreObject {
         }
       }
 
-      /**
-       * 
-       */
+    /**
+     * Undo any changes since the last save
+     */
     undo() {
         if(this.history !== null) {
             this.object = this.createMethod(this.history);
@@ -304,14 +317,14 @@ class StoreObject {
     }
 
     /**
-     * 
+     * get the value of the saved snapshot object
      */
     get value() {
         return this.object;
     }
 
     /**
-     * 
+     * Commits changes and Clears History
      */
     save() {
         this.history = null;
