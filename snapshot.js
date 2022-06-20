@@ -1,5 +1,5 @@
 /*!
- * snapshot <>
+ * snapshot <https://github.com/orjwanati/snapShot.git>
 *  This File conatins a simple implementation the Memento design pattern which is behavioral pattern and one of 
  *  23 design patterns discussed by Gang of Four. Memento pattern is used to restore state of an object 
  *  to a previous state. It is also known as snapshot pattern.
